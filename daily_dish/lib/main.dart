@@ -1,74 +1,106 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http; // performs network requests
-import 'package:xml/xml.dart'; // parses XML
+import 'home.dart';
+import 'allrecipes.dart';
+import 'pickforme.dart';
+import 'recipe.dart';
 
+void main() => runApp(const MyApp());
 
-void main() {
-  runApp(const DailyDishApp());
-}
-
-class DailyDishApp extends StatelessWidget {
-  const DailyDishApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: DailyDishHome(),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white, 
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.deepOrange.shade900,
+          elevation: 0,
+        ),
+      ),
+      home: MainScaffold(),
     );
   }
 }
 
-class DailyDishHome extends StatefulWidget {
-  const DailyDishHome({super.key});
+class MainScaffold extends StatefulWidget {
+  const MainScaffold({super.key});
 
   @override
-  State<DailyDishHome> createState() => _DailyDishHomeState();
+  State<MainScaffold> createState() => _MainScaffoldState();
 }
 
-class _DailyDishHomeState extends State<DailyDishHome> {
+class _MainScaffoldState extends State<MainScaffold> {
   int currentIndex = 0;
+  String? selectedRecipeId;
+
+  
+  void _onDestinationSelected(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
+
+  void _onRecipeSelected(String recipeId) {
+    setState(() {
+      selectedRecipeId = recipeId;
+      currentIndex = 3;
+    });
+  }
+
+
+  List<Widget> get _pages => [
+    const HomeScreen(),
+    AllRecipesScreen(onRecipeSelected: _onRecipeSelected),
+    PickForMeScreen(onRecipeSelected: _onRecipeSelected),
+    RecipeScreen(recipeId: selectedRecipeId ?? '52874'),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Daily Dish", style: TextStyle(color: Colors.deepOrange.shade900)),
-        backgroundColor: Colors.deepOrange.shade900,
+        title: Text("The Daily Dish", 
+          style: TextStyle(color: Colors.white)
+        ),
       ),
-      backgroundColor: Colors.orange.shade50,
-      body: <Widget>[
-        const Center(child: Text("Home Placeholder")),
-        const Center(child: Text("Cuisines Placeholder")),
-        const Center(child: Text("Recipe Placeholder")),
-        const Center(child: Text("Pick For Me Placeholder")),
-      ][currentIndex],
-      bottomNavigationBar: NavigationBar(
-        backgroundColor: Colors.deepOrange.shade900,
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentIndex = index;
-          });
-        },
-        indicatorColor: Colors.white,
-        selectedIndex: currentIndex,
-        destinations: <Widget>[
-          NavigationDestination(
+      body: _pages[currentIndex],
+      bottomNavigationBar: NavigationBarTheme(
+        data: NavigationBarThemeData(
+          labelTextStyle: WidgetStateProperty.all(
+            const TextStyle(color: Colors.white),
+          ),
+        ),
+        child: NavigationBar(
+          backgroundColor: Colors.deepOrange.shade900,
+          onDestinationSelected: _onDestinationSelected,
+          indicatorColor: Colors.white,
+          selectedIndex: currentIndex,
+          destinations: [
+            NavigationDestination(
               icon: Icon(Icons.home, color: Colors.white),
-              selectedIcon: const Icon(Icons.home, color: Colors.deepOrange.shade900),
-              label: "Home"),
-          NavigationDestination(
+              selectedIcon: Icon(Icons.book, color: Colors.deepOrange.shade900),
+              label: "Home",
+            ),
+            NavigationDestination(
               icon: Icon(Icons.restaurant_menu, color: Colors.white),
-              selectedIcon: const Icon(Icons.restaurant_menu, color: Colors.deepOrange.shade900),
-              label: "Cuisines"),
-          NavigationDestination(
+              selectedIcon: Icon(Icons.book, color: Colors.deepOrange.shade900),
+              label: "All Recipes",
+            ),
+            NavigationDestination(
               icon: Icon(Icons.shuffle, color: Colors.white),
-              selectedIcon: const Icon(Icons.shuffle, color: Colors.deepOrange.shade900),
-              label: "Pick For Me"),
-          NavigationDestination(
+              selectedIcon: Icon(Icons.book, color: Colors.deepOrange.shade900),
+              label: "Pick For Me",
+            ),
+            NavigationDestination(
               icon: Icon(Icons.book, color: Colors.white),
-              selectedIcon: const Icon(Icons.book, color: Colors.deepOrange.shade900),
-              label: "Recipe"),
-        ],
+              selectedIcon: Icon(Icons.book, color: Colors.deepOrange.shade900),
+              label: "Recipe",
+            ),
+          ],
+        ),
       ),
     );
   }
