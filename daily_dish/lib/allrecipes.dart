@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'recipelistitem.dart'; 
+import 'package:google_fonts/google_fonts.dart';
+
 
 class AllRecipesScreen extends StatefulWidget {
   final Function(String) onRecipeSelected;
@@ -61,7 +63,13 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
       appBar: AppBar(
         title: Text(
           'Browse Recipes', 
-          style: TextStyle(color: Colors.deepOrange.shade900)
+          style: GoogleFonts.atma(
+            textStyle: TextStyle(
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+              color: Colors.deepOrange.shade900,
+            ),
+          ),
         ),
         backgroundColor: Colors.white,
       ),

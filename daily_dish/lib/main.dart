@@ -3,6 +3,7 @@ import 'home.dart';
 import 'allrecipes.dart';
 import 'pickforme.dart';
 import 'recipe.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() => runApp(const MyApp());
 
@@ -63,7 +64,13 @@ class _MainScaffoldState extends State<MainScaffold> {
     return Scaffold(
       appBar: AppBar(
         title: Text("The Daily Dish", 
-          style: TextStyle(color: Colors.white)
+          style: GoogleFonts.atma(
+            textStyle: TextStyle(
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
         ),
       ),
       body: _pages[currentIndex],

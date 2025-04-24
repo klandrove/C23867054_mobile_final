@@ -24,7 +24,6 @@ class _RecipeListItemState extends State<RecipeListItem> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Image on the left
           ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
             child: Image.network(
@@ -35,7 +34,6 @@ class _RecipeListItemState extends State<RecipeListItem> {
             ),
           ),
           const SizedBox(width: 12),
-          // Title and description on the right
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
